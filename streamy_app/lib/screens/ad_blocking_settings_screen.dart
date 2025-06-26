@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -127,76 +126,13 @@ class _AdBlockingSettingsScreenState extends State<AdBlockingSettingsScreen> {
   }
 
   Future<void> _importFilters() async {
-    try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['json'],
-        allowMultiple: false,
-      );
-
-      if (result == null || result.files.isEmpty) return;
-
-      final file = File(result.files.first.path!);
-      final contents = await file.readAsString();
-      final data = jsonDecode(contents) as Map<String, dynamic>;
-
-      if (data['config'] != null) {
-        final importedConfig = AdBlockingConfig.fromJson(data['config']);
-        
-        if (!mounted) return;
-        final confirmed = await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Import Filters'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('This will replace your current ad blocking configuration with:'),
-                const SizedBox(height: 12),
-                Text('• ${importedConfig.customPatterns.length} custom patterns'),
-                Text('• ${importedConfig.allowedDomains.length} allowed domains'),
-                const SizedBox(height: 12),
-                const Text('Continue?'),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Import'),
-              ),
-            ],
-          ),
-        );
-
-        if (confirmed == true) {
-          _updateConfig(importedConfig);
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Filters imported successfully'),
-                backgroundColor: Colors.green,
-              ),
-            );
-          }
-        }
-      } else {
-        throw 'Invalid file format';
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Import failed: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    // Import functionality temporarily disabled
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Import functionality coming soon'),
+        backgroundColor: Colors.orange,
+      ),
+    );
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/media_card.dart';
 import '../models/media_item.dart';
 import '../services/api_service.dart';
+import '../l10n/app_localizations.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
 
@@ -84,11 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Streamy',
-          style: TextStyle(
+        title: Text(
+          localizations?.appTitle ?? 'Streamy',
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -186,21 +189,21 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onBottomNavTapped,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: localizations?.home ?? 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
+            icon: const Icon(Icons.explore),
             label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
+            icon: const Icon(Icons.library_books),
             label: 'Library',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             label: 'Profile',
           ),
         ],

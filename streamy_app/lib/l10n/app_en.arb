@@ -1,0 +1,195 @@
+{
+  "@@locale": "en",
+  "appTitle": "Streamy",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home screen title"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Search screen title"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "adBlocking": "Ad Blocking",
+  "@adBlocking": {
+    "description": "Ad blocking settings title"
+  },
+  "sourceManagement": "Source Management",
+  "@sourceManagement": {
+    "description": "Source management screen title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting title"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language option"
+  },
+  "searchMovies": "Search for movies...",
+  "@searchMovies": {
+    "description": "Search placeholder text"
+  },
+  "noResults": "No results found",
+  "@noResults": {
+    "description": "Message when no search results are found"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error message"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Try again button text"
+  },
+  "watchNow": "Watch Now",
+  "@watchNow": {
+    "description": "Watch now button text"
+  },
+  "cast": "Cast",
+  "@cast": {
+    "description": "Cast section title"
+  },
+  "director": "Director",
+  "@director": {
+    "description": "Director label"
+  },
+  "year": "Year",
+  "@year": {
+    "description": "Year label"
+  },
+  "rating": "Rating",
+  "@rating": {
+    "description": "Rating label"
+  },
+  "description": "Description",
+  "@description": {
+    "description": "Description section title"
+  },
+  "similarMovies": "Similar Movies",
+  "@similarMovies": {
+    "description": "Similar movies section title"
+  },
+  "videoSources": "Video Sources",
+  "@videoSources": {
+    "description": "Video sources section title"
+  },
+  "quality": "Quality",
+  "@quality": {
+    "description": "Video quality label"
+  },
+  "format": "Format",
+  "@format": {
+    "description": "Video format label"
+  },
+  "networkFiltering": "Network Filtering",
+  "@networkFiltering": {
+    "description": "Network filtering setting"
+  },
+  "cosmeticFiltering": "Cosmetic Filtering",
+  "@cosmeticFiltering": {
+    "description": "Cosmetic filtering setting"
+  },
+  "scriptBlocking": "Script Blocking",
+  "@scriptBlocking": {
+    "description": "Script blocking setting"
+  },
+  "cookieNotices": "Block Cookie Notices",
+  "@cookieNotices": {
+    "description": "Cookie notices blocking setting"
+  },
+  "socialWidgets": "Block Social Widgets",
+  "@socialWidgets": {
+    "description": "Social widgets blocking setting"
+  },
+  "tracking": "Block Tracking",
+  "@tracking": {
+    "description": "Tracking blocking setting"
+  },
+  "customPatterns": "Custom Patterns",
+  "@customPatterns": {
+    "description": "Custom patterns section title"
+  },
+  "allowedDomains": "Allowed Domains",
+  "@allowedDomains": {
+    "description": "Allowed domains section title"
+  },
+  "addPattern": "Add Pattern",
+  "@addPattern": {
+    "description": "Add pattern button text"
+  },
+  "addDomain": "Add Domain",
+  "@addDomain": {
+    "description": "Add domain button text"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "exportSettings": "Export Settings",
+  "@exportSettings": {
+    "description": "Export settings button text"
+  },
+  "importSettings": "Import Settings",
+  "@importSettings": {
+    "description": "Import settings button text"
+  },
+  "importComingSoon": "Import functionality coming soon",
+  "@importComingSoon": {
+    "description": "Import coming soon message"
+  },
+  "settingsExported": "Settings exported successfully",
+  "@settingsExported": {
+    "description": "Settings exported success message"
+  },
+  "exportFailed": "Export failed",
+  "@exportFailed": {
+    "description": "Export failed message"
+  },
+  "webSources": "Web Sources",
+  "@webSources": {
+    "description": "Web sources section title"
+  },
+  "addSource": "Add Source",
+  "@addSource": {
+    "description": "Add source button text"
+  },
+  "sourceName": "Source Name",
+  "@sourceName": {
+    "description": "Source name input label"
+  },
+  "sourceUrl": "Source URL",
+  "@sourceUrl": {
+    "description": "Source URL input label"
+  },
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled status"
+  },
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled status"
+  }
+}

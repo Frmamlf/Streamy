@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'source_management_screen.dart';
 import 'ad_blocking_settings_screen.dart';
+import '../providers/language_provider.dart';
+import '../l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -20,9 +23,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(localizations?.settings ?? 'Settings'),
       ),
       body: ListView(
         children: [
@@ -40,6 +45,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // In a real app, you would update the app's theme
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Theme change will be available in future updates')),
+                  );
+                },
+              ),
+              Consumer<LanguageProvider>(
+                builder: (context, languageProvider, child) {
+                  return ListTile(
+                    title: Text(AppLocalizations.of(context)?.language ?? 'Language'),
+                    subtitle: Text(languageProvider.getLanguageName(languageProvider.locale.languageCode)),
+                    trailing: DropdownButton<String>(
+                      value: languageProvider.locale.languageCode,
+                      underline: const SizedBox(),
+                      items: LanguageProvider.supportedLocales.map((locale) {
+                        return DropdownMenuItem<String>(
+                          value: locale.languageCode,
+                          child: Text(languageProvider.getLanguageName(locale.languageCode)),
+                        );
+                      }).toList(),
+                      onChanged: (String? newLanguage) {
+                        if (newLanguage != null) {
+                          languageProvider.setLanguage(Locale(newLanguage));
+                        }
+                      },
+                    ),
                   );
                 },
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primaryColor = Color(0xFF6200EA);
@@ -7,7 +8,7 @@ class AppTheme {
   static const Color surfaceColor = Color(0xFF1E1E1E);
   static const Color errorColor = Color(0xFFCF6679);
 
-  static final ThemeData darkTheme = ThemeData.dark().copyWith(
+  static ThemeData darkTheme = ThemeData.dark().copyWith(
     primaryColor: primaryColor,
     colorScheme: const ColorScheme.dark(
       primary: primaryColor,
@@ -16,6 +17,53 @@ class AppTheme {
       error: errorColor,
     ),
     scaffoldBackgroundColor: backgroundColor,
+    textTheme: GoogleFonts.rubikTextTheme(ThemeData.dark().textTheme).copyWith(
+      headlineLarge: GoogleFonts.rubik(
+        fontSize: 32,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      headlineMedium: GoogleFonts.rubik(
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      headlineSmall: GoogleFonts.rubik(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
+      titleLarge: GoogleFonts.rubik(
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
+      titleMedium: GoogleFonts.rubik(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),
+      titleSmall: GoogleFonts.rubik(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Colors.white70,
+      ),
+      bodyLarge: GoogleFonts.rubik(
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+        color: Colors.white,
+      ),
+      bodyMedium: GoogleFonts.rubik(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: Colors.white70,
+      ),
+      bodySmall: GoogleFonts.rubik(
+        fontSize: 12,
+        fontWeight: FontWeight.normal,
+        color: Colors.white60,
+      ),
+    ),
     cardTheme: CardThemeData(
       color: surfaceColor,
       shape: RoundedRectangleBorder(
@@ -23,11 +71,11 @@ class AppTheme {
       ),
       elevation: 0,
     ),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: backgroundColor,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: TextStyle(
+      titleTextStyle: GoogleFonts.rubik(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
@@ -41,45 +89,32 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        textStyle: GoogleFonts.rubik(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: accentColor,
+        textStyle: GoogleFonts.rubik(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: surfaceColor,
       selectedItemColor: primaryColor,
       unselectedItemColor: Colors.grey,
-    ),
-    textTheme: const TextTheme(
-      titleLarge: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-      titleMedium: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-      titleSmall: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),
-      bodyLarge: TextStyle(
-        fontSize: 16,
-        color: Colors.white,
-      ),
-      bodyMedium: TextStyle(
-        fontSize: 14,
-        color: Colors.white70,
-      ),
-      bodySmall: TextStyle(
+      selectedLabelStyle: GoogleFonts.rubik(
         fontSize: 12,
-        color: Colors.white60,
+        fontWeight: FontWeight.w500,
+      ),
+      unselectedLabelStyle: GoogleFonts.rubik(
+        fontSize: 12,
+        fontWeight: FontWeight.normal,
       ),
     ),
     dividerColor: Colors.white12,
