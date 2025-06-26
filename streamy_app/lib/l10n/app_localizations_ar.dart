@@ -48,6 +48,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get error => 'خطأ';
 
   @override
+  String get downloads => 'التنزيلات';
+
+  @override
+  String get downloading => 'يجري التحميل';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String get failed => 'فشل';
+
+  @override
+  String get providers => 'مقدمو الخدمة';
+
+  @override
   String get tryAgain => 'حاول مرة أخرى';
 
   @override

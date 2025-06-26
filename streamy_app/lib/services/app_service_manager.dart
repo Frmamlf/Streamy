@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'ad_blocking_engine.dart';
 import 'web_scraping_service.dart';
+import '../core/plugins/plugin_manager.dart';
+import '../core/discovery/content_discovery_service.dart';
+import '../core/downloads/download_manager.dart';
+import '../core/subtitles/subtitle_service.dart';
 
 /// Service manager for handling ad blocking configuration and web scraping
 class AppServiceManager extends ChangeNotifier {
@@ -14,11 +18,23 @@ class AppServiceManager extends ChangeNotifier {
   WebScrapingService? _webScrapingService;
   bool _isInitialized = false;
 
+  // Core services
+  final PluginManager _pluginManager = PluginManager();
+  final ContentDiscoveryService _contentDiscoveryService = ContentDiscoveryService();
+  final DownloadManager _downloadManager = DownloadManager();
+  final SubtitleService _subtitleService = SubtitleService();
+
   AdBlockingConfig get adBlockingConfig => _adBlockingConfig;
   WebScrapingService get webScrapingService {
     _webScrapingService ??= WebScrapingService(adBlockingConfig: _adBlockingConfig);
     return _webScrapingService!;
   }
+
+  // Core service getters
+  PluginManager get pluginManager => _pluginManager;
+  ContentDiscoveryService get contentDiscoveryService => _contentDiscoveryService;
+  DownloadManager get downloadManager => _downloadManager;
+  SubtitleService get subtitleService => _subtitleService;
 
   bool get isInitialized => _isInitialized;
 
@@ -28,6 +44,13 @@ class AppServiceManager extends ChangeNotifier {
     
     await _loadAdBlockingConfig();
     _initializeWebScrapingService();
+    
+    // Initialize core services
+    await _pluginManager.initialize();
+    await _contentDiscoveryService.initialize();
+    await _downloadManager.initialize();
+    await _subtitleService.initialize();
+    
     _isInitialized = true;
     notifyListeners();
   }

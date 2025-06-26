@@ -176,6 +176,36 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get error;
 
+  /// Downloads screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads'**
+  String get downloads;
+
+  /// Downloading tab title
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading'**
+  String get downloading;
+
+  /// Completed tab title
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// Failed tab title
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
+
+  /// Providers screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Providers'**
+  String get providers;
+
   /// Try again button text
   ///
   /// In en, this message translates to:

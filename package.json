@@ -1,0 +1,46 @@
+{
+  "name": "streamy",
+  "version": "1.0.0",
+  "description": "Advanced Cloud Streaming Platform built with Flutter",
+  "main": "streamy_app/lib/main.dart",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/streamy.git"
+  },
+  "keywords": [
+    "flutter",
+    "streaming",
+    "video",
+    "mobile",
+    "cloudstream",
+    "anime",
+    "movies",
+    "tv-shows"
+  ],
+  "author": "Streamy Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-username/streamy/issues"
+  },
+  "homepage": "https://github.com/your-username/streamy#readme",
+  "directories": {
+    "docs": "docs",
+    "test": "streamy_app/test"
+  },
+  "scripts": {
+    "flutter:clean": "cd streamy_app && flutter clean",
+    "flutter:get": "cd streamy_app && flutter pub get",
+    "flutter:run": "cd streamy_app && flutter run",
+    "flutter:test": "cd streamy_app && flutter test",
+    "flutter:build:android": "cd streamy_app && flutter build apk",
+    "flutter:build:ios": "cd streamy_app && flutter build ios",
+    "backend:install": "cd backend && pip install -r requirements.txt",
+    "backend:run": "cd backend && python run.py",
+    "backend:test": "cd backend && python -m pytest tests/",
+    "setup": "npm run flutter:get && npm run backend:install",
+    "dev": "npm run backend:run & npm run flutter:run"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

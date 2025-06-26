@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/media_card.dart';
 import '../models/media_item.dart';
 import '../services/api_service.dart';
 import '../l10n/app_localizations.dart';
+import '../core/discovery/content_discovery_service.dart';
+import '../core/plugins/plugin_manager.dart';
+import '../core/downloads/download_manager.dart';
+import '../core/api/main_api.dart';
 import 'search_screen.dart';
 import 'settings_screen.dart';
+import 'downloads_screen.dart';
+import 'plugin_management_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,39 +22,68 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> _categories = [
-    'All', 'Movies', 'TV Shows', 'Anime', 'Favorites'
+    'Home', 'Trending', 'Movies', 'TV Shows', 'Anime', 'Favorites'
   ];
   
   int _selectedIndex = 0;
   int _selectedCategoryIndex = 0;
   bool _isLoading = true;
-  List<MediaItem> _mediaItems = [];
-  List<MediaItem> _filteredMediaItems = [];
-  final ApiService _apiService = ApiService();
+  List<SearchResponse> _contentItems = [];
+  List<SearchResponse> _filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    _loadMedia();
+    _loadContent();
   }
 
-  Future<void> _loadMedia() async {
+  Future<void> _loadContent() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final items = await _apiService.getMedia();
+      final contentDiscovery = context.read<ContentDiscoveryService>();
+      
+      List<SearchResponse> items = [];
+      
+      switch (_selectedCategoryIndex) {
+        case 0: // Home - mix of trending and recommendations
+          final trending = await contentDiscovery.getTrending();
+          final recommendations = await contentDiscovery.getRecommendations();
+          items = [...trending.take(10), ...recommendations.take(10)];
+          break;
+        case 1: // Trending
+          items = await contentDiscovery.getTrending();
+          break;
+        case 2: // Movies
+          items = await contentDiscovery.getByGenre('movie');
+          break;
+        case 3: // TV Shows
+          items = await contentDiscovery.getByGenre('tv');
+          break;
+        case 4: // Anime
+          items = await contentDiscovery.getByGenre('anime');
+          break;
+        case 5: // Favorites
+          items = contentDiscovery.favorites;
+          break;
+      }
+      
       setState(() {
-        _mediaItems = items;
-        _filterMediaByCategory();
+        _contentItems = items;
+        _filteredItems = items;
         _isLoading = false;
       });
     } catch (e) {
-      // In a real app, we'd handle errors properly
+      debugPrint('Error loading content: $e');
       setState(() {
         _isLoading = false;
-        _mediaItems = dummyMediaItems; // Fallback to dummy data
+        _contentItems = [];
+        _filteredItems = [];
+      });
+    }
+  }
         _filterMediaByCategory();
       });
     }
