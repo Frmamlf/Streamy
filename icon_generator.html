@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Streamy App Icon Generator</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #f0f0f0; }
+        #canvas { border: 1px solid #ccc; background: white; }
+        .controls { margin: 20px 0; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Streamy App Icon Generator</h1>
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <div class="controls">
+        <button onclick="generateIcon()">Generate Icon</button>
+        <button onclick="downloadIcon()">Download PNG</button>
+        <button onclick="downloadSVG()">Download SVG</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateIcon() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const size = canvas.width;
+            const center = size / 2;
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#6200EA'); // Purple (primary color)
+            gradient.addColorStop(0.5, '#3700B3'); // Darker purple
+            gradient.addColorStop(1, '#1A0047'); // Very dark purple
+            
+            // Draw rounded rectangle background
+            const cornerRadius = size * 0.15;
+            ctx.fillStyle = gradient;
+            roundedRect(ctx, 0, 0, size, size, cornerRadius);
+            ctx.fill();
+            
+            // Add subtle inner shadow/glow
+            const shadowGradient = ctx.createRadialGradient(center, center, 0, center, center, size * 0.7);
+            shadowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+            shadowGradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+            ctx.fillStyle = shadowGradient;
+            roundedRect(ctx, 0, 0, size, size, cornerRadius);
+            ctx.fill();
+            
+            // Draw main play button circle
+            const playCircleRadius = size * 0.28;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.beginPath();
+            ctx.arc(center, center, playCircleRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Add shadow to play circle
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 8;
+            ctx.beginPath();
+            ctx.arc(center, center, playCircleRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetY = 0;
+            
+            // Draw play triangle
+            const playSize = size * 0.12;
+            const playOffset = size * 0.02;
+            ctx.fillStyle = '#6200EA';
+            ctx.beginPath();
+            ctx.moveTo(center - playSize + playOffset, center - playSize);
+            ctx.lineTo(center - playSize + playOffset, center + playSize);
+            ctx.lineTo(center + playSize + playOffset, center);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw film strip elements around the circle
+            drawFilmStrip(ctx, center - size * 0.35, center - size * 0.15, size * 0.08, size * 0.3, -15);
+            drawFilmStrip(ctx, center + size * 0.27, center - size * 0.15, size * 0.08, size * 0.3, 15);
+            
+            // Draw small movie/video icons
+            drawMovieIcon(ctx, center - size * 0.3, center + size * 0.25, size * 0.08);
+            drawVideoIcon(ctx, center + size * 0.22, center + size * 0.25, size * 0.08);
+            
+            // Add app name at bottom (optional, can be removed for cleaner look)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = `bold ${size * 0.06}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillText('STREAMY', center, center + size * 0.4);
+        }
+
+        function roundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function drawFilmStrip(ctx, x, y, width, height, rotation) {
+            ctx.save();
+            ctx.translate(x + width/2, y + height/2);
+            ctx.rotate(rotation * Math.PI / 180);
+            
+            // Film strip background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fillRect(-width/2, -height/2, width, height);
+            
+            // Film holes
+            ctx.fillStyle = '#6200EA';
+            const holeSize = width * 0.3;
+            const holes = 5;
+            for (let i = 0; i < holes; i++) {
+                const holeY = -height/2 + (height / (holes - 1)) * i;
+                ctx.fillRect(-width/2 + width * 0.1, holeY - holeSize/2, holeSize, holeSize);
+                ctx.fillRect(width/2 - width * 0.1 - holeSize, holeY - holeSize/2, holeSize, holeSize);
+            }
+            
+            ctx.restore();
+        }
+
+        function drawMovieIcon(ctx, x, y, size) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            // Movie camera body
+            ctx.fillRect(x, y, size * 0.8, size * 0.6);
+            // Lens
+            ctx.beginPath();
+            ctx.arc(x + size * 0.4, y + size * 0.3, size * 0.2, 0, 2 * Math.PI);
+            ctx.fill();
+            // Film reel
+            ctx.beginPath();
+            ctx.arc(x + size * 0.9, y + size * 0.2, size * 0.15, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function drawVideoIcon(ctx, x, y, size) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            // Video screen
+            ctx.fillRect(x, y, size * 0.8, size * 0.6);
+            // Play button on screen
+            ctx.fillStyle = '#6200EA';
+            ctx.beginPath();
+            ctx.moveTo(x + size * 0.3, y + size * 0.2);
+            ctx.lineTo(x + size * 0.3, y + size * 0.4);
+            ctx.lineTo(x + size * 0.5, y + size * 0.3);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'streamy_icon_4k.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function downloadSVG() {
+            const svgContent = generateSVG();
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'streamy_icon.svg';
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function generateSVG() {
+            return `<svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6200EA;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3700B3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A0047;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgba(0,0,0,0.3);stop-opacity:1" />
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="154" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="154" fill="url(#glow)"/>
+  
+  <!-- Main play circle -->
+  <circle cx="512" cy="512" r="287" fill="rgba(255,255,255,0.95)" filter="url(#shadow)"/>
+  
+  <!-- Play triangle -->
+  <polygon points="411,389 411,635 635,512" fill="#6200EA"/>
+  
+  <!-- Film strips -->
+  <g transform="translate(153,358) rotate(-15)">
+    <rect width="82" height="307" fill="rgba(255,255,255,0.8)"/>
+    <rect x="8" y="15" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="15" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="92" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="92" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="169" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="169" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="246" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="246" width="25" height="25" fill="#6200EA"/>
+  </g>
+  
+  <g transform="translate(789,358) rotate(15)">
+    <rect width="82" height="307" fill="rgba(255,255,255,0.8)"/>
+    <rect x="8" y="15" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="15" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="92" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="92" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="169" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="169" width="25" height="25" fill="#6200EA"/>
+    <rect x="8" y="246" width="25" height="25" fill="#6200EA"/>
+    <rect x="49" y="246" width="25" height="25" fill="#6200EA"/>
+  </g>
+  
+  <!-- Movie icons -->
+  <g transform="translate(194,768)">
+    <rect width="65" height="49" fill="rgba(255,255,255,0.8)"/>
+    <circle cx="33" cy="24" r="16" fill="rgba(255,255,255,0.8)"/>
+    <circle cx="73" cy="16" r="12" fill="rgba(255,255,255,0.8)"/>
+  </g>
+  
+  <g transform="translate(737,768)">
+    <rect width="65" height="49" fill="rgba(255,255,255,0.8)"/>
+    <polygon points="24,16 24,33 41,24" fill="#6200EA"/>
+  </g>
+  
+  <!-- App name -->
+  <text x="512" y="922" text-anchor="middle" font-family="Arial, sans-serif" font-size="61" font-weight="bold" fill="rgba(255,255,255,0.9)">STREAMY</text>
+</svg>`;
+        }
+
+        // Generate the icon on page load
+        window.onload = generateIcon;
+    </script>
+</body>
+</html>
