@@ -48,21 +48,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
-  String get downloads => 'Downloads';
-
-  @override
-  String get downloading => 'Downloading';
-
-  @override
-  String get completed => 'Completed';
-
-  @override
-  String get failed => 'Failed';
-
-  @override
-  String get providers => 'Providers';
-
-  @override
   String get tryAgain => 'Try Again';
 
   @override
