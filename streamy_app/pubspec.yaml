@@ -86,8 +86,8 @@ dependencies:
   firebase_performance: ^0.9.2+5
   
   # Background tasks and notifications
-  flutter_local_notifications: ^16.1.0
-  workmanager: ^0.5.1
+  # flutter_local_notifications: ^15.1.0+1  # Temporarily removed due to build issues
+  # workmanager: ^0.5.1  # Temporarily removed due to build issues
   
   # UI enhancements
   flutter_slidable: ^3.0.0  # Swipe actions
