@@ -143,6 +143,7 @@ class _AdBlockingSettingsScreenState extends State<AdBlockingSettingsScreen> {
       if (data['config'] != null) {
         final importedConfig = AdBlockingConfig.fromJson(data['config']);
         
+        if (!mounted) return;
         final confirmed = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
@@ -411,7 +412,7 @@ class _AdBlockingSettingsScreenState extends State<AdBlockingSettingsScreen> {
           
           // Info card
           Card(
-            color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

@@ -1,8 +1,10 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import '../models/media_item.dart';
 import '../models/web_source.dart';
 import '../services/api_service.dart';
 import '../services/app_service_manager.dart';
+import '../services/web_scraping_service.dart' as scraping;
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
@@ -76,19 +78,18 @@ class _DetailScreenState extends State<DetailScreen> {
         final originalUrl = widget.mediaItem.metadata?['originalUrl'];
         
         if (originalUrl != null) {
-          final extractor = await _serviceManager.webScrapingService.extractVideoSources(originalUrl);
+          final extractedSources = await _serviceManager.webScrapingService.extractVideoSources(originalUrl);
           
-          final videoUrls = extractor['videoSources'] ?? <String>[];
-          for (final url in videoUrls) {
+          for (final scraping.VideoSource videoSource in extractedSources) {
             sources.add(VideoSource(
-              url: url,
-              quality: 'Unknown',
-              format: _getFormatFromUrl(url),
+              url: videoSource.url,
+              quality: videoSource.quality,
+              format: videoSource.type,
             ));
           }
         }
       } catch (e) {
-        print('Error extracting web video sources: $e');
+        developer.log('Error extracting web video sources: $e', name: 'DetailScreen');
       }
     }
 
@@ -325,7 +326,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       }
                     },
                     label: Text('${source.quality} (${source.format})'),
-                    selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                    selectedColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
                     checkmarkColor: Theme.of(context).primaryColor,
                   ),
                 );
@@ -359,13 +360,4 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
-  String _getFormatFromUrl(String url) {
-    final lowerUrl = url.toLowerCase();
-    if (lowerUrl.contains('.m3u8')) return 'HLS';
-    if (lowerUrl.contains('.mp4')) return 'MP4';
-    if (lowerUrl.contains('.mkv')) return 'MKV';
-    if (lowerUrl.contains('.avi')) return 'AVI';
-    if (lowerUrl.contains('.webm')) return 'WEBM';
-    return 'Unknown';
-  }
 }

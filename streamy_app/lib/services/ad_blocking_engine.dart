@@ -288,7 +288,7 @@ class AdBlockingEngine {
     
     // Remove blocked scripts
     if (_scriptBlockingEnabled) {
-      processedHtml = _removeBlockedScripts(processedHtml);
+      processedHtml = _removeBlockedScriptsString(processedHtml);
     }
     
     // Apply cosmetic filtering
@@ -353,6 +353,114 @@ class AdBlockingEngine {
     );
   }
 
+  /// Process HTML content and remove blocked elements
+  String processHtml(String html, Uri pageUrl) {
+    if (!_cosmeticFilteringEnabled) return html;
+    
+    try {
+      final document = html_parser.parse(html);
+      
+      // Remove elements based on cosmetic filters
+      _removeCosmeticElements(document, pageUrl.host);
+      
+      // Remove script elements if script blocking is enabled
+      if (_scriptBlockingEnabled) {
+        _removeBlockedScripts(document, pageUrl);
+      }
+      
+      return document.outerHtml;
+    } catch (e) {
+      // Return original HTML if processing fails
+      return html;
+    }
+  }
+
+  /// Remove cosmetic elements from document
+  void _removeCosmeticElements(dynamic document, String domain) {
+    // Remove elements matching cosmetic patterns
+    for (final pattern in _commonCosmeticSelectors) {
+      try {
+        final elements = document.querySelectorAll(pattern);
+        for (final element in elements) {
+          element.remove();
+        }
+      } catch (e) {
+        // Continue with other patterns if one fails
+      }
+    }
+    
+    // Apply custom patterns
+    for (final pattern in _customPatterns) {
+      if (pattern.startsWith('##')) {
+        // Cosmetic filter
+        try {
+          final selector = pattern.substring(2);
+          final elements = document.querySelectorAll(selector);
+          for (final element in elements) {
+            element.remove();
+          }
+        } catch (e) {
+          // Continue with other patterns
+        }
+      }
+    }
+  }
+  
+  /// Remove blocked script elements
+  void _removeBlockedScripts(dynamic document, Uri pageUrl) {
+    final scripts = document.querySelectorAll('script');
+    final scriptsToRemove = <dynamic>[];
+    
+    for (final script in scripts) {
+      final src = script.attributes['src'];
+      if (src != null) {
+        final scriptUrl = _resolveUrl(src, pageUrl.toString());
+        if (shouldBlockRequest(scriptUrl, pageUrl.toString(), 'script')) {
+          scriptsToRemove.add(script);
+        }
+      } else {
+        // Inline script - check content for tracking patterns
+        final content = script.text.toLowerCase();
+        if (_containsTrackingCode(content)) {
+          scriptsToRemove.add(script);
+        }
+      }
+    }
+    
+    for (final script in scriptsToRemove) {
+      script.remove();
+    }
+  }
+  
+  /// Check if script content contains tracking code
+  bool _containsTrackingCode(String content) {
+    final trackingPatterns = [
+      'google-analytics',
+      'googletagmanager',
+      'gtag(',
+      'ga(',
+      '_gaq',
+      'fbq(',
+      'facebook.com/tr',
+      'doubleclick',
+      'adsystem',
+      'googlesyndication',
+    ];
+    
+    return trackingPatterns.any((pattern) => content.contains(pattern));
+  }
+  
+  /// Resolve relative URL to absolute URL
+  String _resolveUrl(String url, String baseUrl) {
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('//')) return 'https:$url';
+    if (url.startsWith('/')) {
+      final uri = Uri.parse(baseUrl);
+      return '${uri.scheme}://${uri.host}$url';
+    }
+    return '$baseUrl/$url';
+  }
+
   // Private helper methods
   bool _matchesPattern(String url, String pattern) {
     // Implement uBlock-style pattern matching
@@ -386,7 +494,7 @@ class AdBlockingEngine {
       url.toLowerCase().contains(keyword));
   }
 
-  String _removeBlockedScripts(String html) {
+  String _removeBlockedScriptsString(String html) {
     String processedHtml = html;
     
     for (final pattern in _scriptBlockingPatterns) {
