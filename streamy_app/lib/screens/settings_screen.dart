@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'source_management_screen.dart';
+import 'ad_blocking_settings_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -88,6 +89,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   setState(() {
                     _enableAdBlocking = value;
                   });
+                },
+              ),
+              ListTile(
+                title: const Text('Advanced Ad Blocking'),
+                subtitle: const Text('Configure advanced ad blocking options'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdBlockingSettingsScreen(),
+                    ),
+                  );
                 },
               ),
               ListTile(

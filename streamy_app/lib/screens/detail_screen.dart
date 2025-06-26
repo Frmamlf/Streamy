@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/media_item.dart';
 import '../models/web_source.dart';
 import '../services/api_service.dart';
-import '../services/web_scraping_service.dart';
+import '../services/app_service_manager.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
@@ -22,7 +22,7 @@ class _DetailScreenState extends State<DetailScreen> {
   MediaItem? _detailedItem;
   List<VideoSource> _availableVideoSources = [];
   final ApiService _apiService = ApiService();
-  final WebScrapingService _webScrapingService = WebScrapingService();
+  final AppServiceManager _serviceManager = AppServiceManager();
 
   @override
   void initState() {
@@ -73,19 +73,19 @@ class _DetailScreenState extends State<DetailScreen> {
     // Try to extract from web sources if this is a web-scraped item
     if (widget.mediaItem.metadata?['source'] != null) {
       try {
-        final sourceName = widget.mediaItem.metadata!['source'];
-        final originalUrl = widget.mediaItem.metadata!['originalUrl'];
+        final originalUrl = widget.mediaItem.metadata?['originalUrl'];
         
         if (originalUrl != null) {
-          final webSource = _webScrapingService.allSources
-              .firstWhere((s) => s.name == sourceName);
+          final extractor = await _serviceManager.webScrapingService.extractVideoSources(originalUrl);
           
-          final extractor = await _webScrapingService.extractVideoSources(
-            webSource, 
-            originalUrl
-          );
-          
-          sources.addAll(extractor.videoSources);
+          final videoUrls = extractor['videoSources'] ?? <String>[];
+          for (final url in videoUrls) {
+            sources.add(VideoSource(
+              url: url,
+              quality: 'Unknown',
+              format: _getFormatFromUrl(url),
+            ));
+          }
         }
       } catch (e) {
         print('Error extracting web video sources: $e');
@@ -131,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void dispose() {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
-    _webScrapingService.dispose();
+    // Service manager handles disposal internally
     super.dispose();
   }
 
@@ -357,5 +357,15 @@ class _DetailScreenState extends State<DetailScreen> {
       case ContentType.anime:
         return Colors.orange;
     }
+  }
+
+  String _getFormatFromUrl(String url) {
+    final lowerUrl = url.toLowerCase();
+    if (lowerUrl.contains('.m3u8')) return 'HLS';
+    if (lowerUrl.contains('.mp4')) return 'MP4';
+    if (lowerUrl.contains('.mkv')) return 'MKV';
+    if (lowerUrl.contains('.avi')) return 'AVI';
+    if (lowerUrl.contains('.webm')) return 'WEBM';
+    return 'Unknown';
   }
 }

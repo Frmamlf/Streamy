@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/media_item.dart';
 import '../services/api_service.dart';
-import '../services/web_scraping_service.dart';
+import '../services/app_service_manager.dart';
 import '../widgets/media_card.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ApiService _apiService = ApiService();
-  final WebScrapingService _webScrapingService = WebScrapingService();
+  final AppServiceManager _serviceManager = AppServiceManager();
   bool _isSearching = false;
   List<MediaItem> _searchResults = [];
   String _lastQuery = '';
@@ -23,7 +23,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _webScrapingService.dispose();
     super.dispose();
   }
 
@@ -44,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
       
       // Search in web sources if enabled
       if (_searchInWebSources) {
-        final webResults = await _webScrapingService.searchMovies(query);
+        final webResults = await _serviceManager.webScrapingService.searchMovies(query);
         results.addAll(webResults);
       }
       

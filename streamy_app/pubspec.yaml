@@ -38,6 +38,9 @@ dependencies:
   # HTTP client for API requests
   http: ^1.4.0
   
+  # HTML parsing for web scraping
+  html: ^0.15.4
+  
   # State management
   provider: ^6.0.5
   
@@ -49,6 +52,13 @@ dependencies:
   # Video player
   video_player: ^2.7.2
   chewie: ^1.7.1
+  
+  # Data persistence
+  shared_preferences: ^2.2.2
+  
+  # File operations
+  file_picker: ^6.1.1
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
